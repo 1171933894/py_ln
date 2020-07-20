@@ -10,21 +10,21 @@
 # from math import *
 # print(sqrt(2))
 
-# import com.py.ln._function as m
+# import com.py.baseln._function as m
 # print(m.add(1,2))
 # print(m.sub(2,1))
 
-# import com.py.ln2.MyMath as mm
+# import com.py.finanindic.MyMath as mm
 # print(mm.addab(1,2))
 
 #报错，不能正常运行
-# from com.py.ln2 import *
+# from com.py.finanindic import *
 # print(MyMath.addab(1,2))
 
-# from com.py.ln2 import *
+# from com.py.finanindic import *
 # print(os.listdir())
 
-# from com.py.ln2.MyMath import *
+# from com.py.finanindic.MyMath import *
 # print(addab(1,2))
 # print(subab(1,2))#报错
 
