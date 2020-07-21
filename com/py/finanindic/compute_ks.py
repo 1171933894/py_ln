@@ -31,3 +31,36 @@ def compute_ks(data):
 # y_predict_proba = est.predict_proba(X_test)[:,1]
 # fpr,tpr,thresholds= sklearn.metrics.roc_curve(np.array(Y_test),y_predict_proba)
 # print ('KS:',max(tpr-fpr))
+
+# 方法三：我们知道计算ks的核心就是好坏人的累积概率分布，我们采用pandas.crosstab函数来计算累积概率分布。
+def ks_calc_cross(data,score_col,class_col):
+    '''
+    功能: 计算KS值，输出对应分割点和累计分布函数曲线图
+    输入值:
+    data: 二维数组或dataframe，包括模型得分和真实的标签
+    score_col: 一维数组或series，代表模型得分（一般为预测正类的概率）
+    class_col: 一维数组或series，代表真实的标签（{0,1}或{-1,1}）
+    输出值:
+    'ks': KS值，'crossdens': 好坏人累积概率分布以及其差值gap
+    '''
+    ks_dict = {}
+    # print("--------")
+    # print(data[score_col[0]])
+    # print(data[class_col[0]])
+    # print("--------")
+    crossfreq = pd.crosstab(data[score_col[0]],data[class_col[0]])
+    crossdens = crossfreq.cumsum(axis=0) / crossfreq.sum()
+    # print("--------")
+    # print(crossdens)
+    # print("--------")
+    crossdens['gap'] = abs(crossdens[0] - crossdens[1])
+    ks = crossdens[crossdens['gap'] == crossdens['gap'].max()]
+    return ks,crossdens
+
+data_test_1 = {'y30':[1,1,1,1,1,1,0,0,0,0,0,0],'a':[1,2,4,2,2,6,5,3,0,5,4,18]}
+data_test_1 = pd.DataFrame(data_test_1)
+# print(data_test_1)
+ks_cross,cdf_cross=ks_calc_cross(data_test_1,['a'],['y30'])
+print(ks_cross)
+print("--------")
+print(cdf_cross)
